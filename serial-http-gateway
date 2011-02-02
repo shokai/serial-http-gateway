@@ -9,6 +9,7 @@ require 'serialport' # ruby gem
 require 'eventmachine'
 require 'evma_httpserver'
 require 'ArgsParser'
+require 'json'
 
 parser = ArgsParser.parser
 parser.bind(:help, :h, 'show help')
@@ -47,21 +48,22 @@ rescue => e
   exit 1
 end
 
+@@recvs = Array.new
 
 class Handler  < EventMachine::Connection
   include EventMachine::HttpServer
   
   def process_http_request
     res = EventMachine::DelegatedHttpResponse.new(self)
+    puts "[http] #{@http_request_method} #{@http_path_info} #{@http_query_string} #{@http_post_content}"
     if @http_request_method == 'GET'
       res.status = 200
-      res.content = 'hoge'
+      res.content = @@recvs.to_json
       res.send_response
     elsif @http_request_method == 'POST'
       res.status = 200
-      puts "[http] #{@http_post_content}"
       @@sp.puts @http_post_content
-      res.content = 'posted'
+      res.content = @@recvs.to_json
       res.send_response
     end
   end
@@ -72,20 +74,27 @@ EM::run do
   
   EM::defer do
     loop do
-      data = @@sp.gets
-      next unless data
+      data = @@sp.gets.gsub(/[\r\n]/,'')
+      next if !data or data.to_s.size < 1
+      now = Time.now.to_i*1000+(Time.now.usec/1000.0).round
+      @@recvs.unshift({:time => now, :data => data})
+      while @@recvs.size > 100 do
+        @@recvs.pop
+      end
       puts data
     end
   end
 
   EventMachine::defer do
     loop do
-      line = gets
+      line = gets.gsub(/[\r\n]/,'')
+      next if !line or line.to_s.size < 1
       @@sp.puts line
     end
   end
 
   EventMachine::start_server("0.0.0.0", params[:port], Handler)
-  puts "start http server on [port #{params[:port]}]"
+  puts "starting http server.."
+  puts " => port #{params[:port]}"
 
 end
