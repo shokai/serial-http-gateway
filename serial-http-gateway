@@ -77,6 +77,7 @@ EM::run do
   EM::defer do
     loop do
       data = @@sp.gets.gsub(/[\r\n]/,'')
+      data = data.to_i if data =~ /^\d+$/
       next if !data or data.to_s.size < 1
       now = Time.now.to_i*1000+(Time.now.usec/1000.0).round
       @@recvs.unshift({:time => now, :data => data})
