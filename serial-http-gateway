@@ -7,6 +7,7 @@ end
 require 'rubygems'
 require 'serialport' # ruby gem
 require 'eventmachine'
+require 'evma_httpserver'
 require 'ArgsParser'
 
 parser = ArgsParser.parser
@@ -39,7 +40,7 @@ if !serial_device or parser.has_option(:help)
 end
 
 begin
-  sp = SerialPort.new(serial_device, params[:bps].to_i, params[:bit].to_i, params[:stopbit].to_i, params[:parity].to_i) # 9600bps, 8bit, stopbit 1, parity none
+  @@sp = SerialPort.new(serial_device, params[:bps].to_i, params[:bit].to_i, params[:stopbit].to_i, params[:parity].to_i) # 9600bps, 8bit, stopbit 1, parity none
 rescue => e
   STDERR.puts 'cannot open serialport!!'
   STDERR.puts e.to_s
@@ -47,11 +48,31 @@ rescue => e
 end
 
 
+class Handler  < EventMachine::Connection
+  include EventMachine::HttpServer
+  
+  def process_http_request
+    res = EventMachine::DelegatedHttpResponse.new(self)
+    if @http_request_method == 'GET'
+      res.status = 200
+      res.content = 'hoge'
+      res.send_response
+    elsif @http_request_method == 'POST'
+      res.status = 200
+      puts "[http] #{@http_post_content}"
+      @@sp.puts @http_post_content
+      res.content = 'posted'
+      res.send_response
+    end
+  end
+end
+
+
 EM::run do
   
   EM::defer do
     loop do
-      data = sp.gets
+      data = @@sp.gets
       next unless data
       puts data
     end
@@ -60,8 +81,11 @@ EM::run do
   EventMachine::defer do
     loop do
       line = gets
-      sp.puts line
+      @@sp.puts line
     end
   end
+
+  EventMachine::start_server("0.0.0.0", params[:port], Handler)
+  puts "start http server on [port #{params[:port]}]"
 
 end
