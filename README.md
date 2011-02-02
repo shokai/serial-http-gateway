@@ -6,7 +6,7 @@ access serial device via HTTP
 Dependencies
 ============
 * ruby-serialport (build from source code)
-* eventmachine, ArgsParser (rubygem)
+* eventmachine, eventmachine_httpserver, json, ArgsParser (rubygem)
 * your serial device (arduino, mbed ...)
 
 
