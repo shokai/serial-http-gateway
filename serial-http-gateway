@@ -1,0 +1,67 @@
+#!/usr/bin/env ruby
+begin
+  require 'serialport' # system gem
+rescue LoadError => e
+  STDERR.puts 'cannot load serialport from system, loading rubygems...'
+end
+require 'rubygems'
+require 'serialport' # ruby gem
+require 'eventmachine'
+require 'ArgsParser'
+
+parser = ArgsParser.parser
+parser.bind(:help, :h, 'show help')
+parser.comment(:bps, 'default : 9600')
+parser.comment(:bit, 'default : 8')
+parser.comment(:stopbit, 'default : 1')
+parser.comment(:parity, 'default : 0')
+parser.comment(:port, 'TCP Port - default : 8783')
+serial_device, params = parser.parse(ARGV)
+
+{
+  :bps => 9600,
+  :bit => 8,
+  :stopbit => 1,
+  :parity => 0,
+  :port => 8783
+}.each{|k,v|
+  params[k] = v if params[k] == nil
+}
+
+if !serial_device or parser.has_option(:help)
+  puts parser.help
+  if RUBY_PLATFORM =~ /mswin|mingw|cygwin|bccwin/
+    puts 'e.g. serial-socket-gateway COM1'
+  else
+    puts 'e.g. serial-socket-gateway /dev/tty.your-usbdevice'
+  end
+  exit 1
+end
+
+begin
+  sp = SerialPort.new(serial_device, params[:bps].to_i, params[:bit].to_i, params[:stopbit].to_i, params[:parity].to_i) # 9600bps, 8bit, stopbit 1, parity none
+rescue => e
+  STDERR.puts 'cannot open serialport!!'
+  STDERR.puts e.to_s
+  exit 1
+end
+
+
+EM::run do
+  
+  EM::defer do
+    loop do
+      data = sp.gets
+      next unless data
+      puts data
+    end
+  end
+
+  EventMachine::defer do
+    loop do
+      line = gets
+      sp.puts line
+    end
+  end
+
+end
