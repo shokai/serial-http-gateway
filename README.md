@@ -34,11 +34,11 @@ Use
 
     ## HTTP-GET
     # read serial data as JSON Array
-    % curl 'http://localhost:8083'
+    % curl 'http://localhost:8783'
 
     ## HTTP-POST
     # write to serial device
-    % curl -d 'testtest' 'http://localhost:8083'
+    % curl -d 'testtest' 'http://localhost:8783'
 
 "time" in json array is unix-time (msec).
 
