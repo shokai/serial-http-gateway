@@ -9,22 +9,12 @@ require 'json'
 
 parser = ArgsParser.parser
 parser.bind(:help, :h, 'show help')
-parser.comment(:bps, 'default : 9600')
-parser.comment(:bit, 'default : 8')
-parser.comment(:stopbit, 'default : 1')
-parser.comment(:parity, 'default : 0')
-parser.comment(:port, 'TCP Port - default : 8783')
+parser.comment(:bps, 'bit per second', 9600)
+parser.comment(:bit, 'bit(7-9)', 8)
+parser.comment(:stopbit, 'stopbit', 1)
+parser.comment(:parity, 'parity bit', 0)
+parser.comment(:port, 'HTTP Server Port', 8783)
 serial_device, params = parser.parse(ARGV)
-
-{
-  :bps => 9600,
-  :bit => 8,
-  :stopbit => 1,
-  :parity => 0,
-  :port => 8783
-}.each{|k,v|
-  params[k] = v if params[k] == nil
-}
 
 if !serial_device or parser.has_option(:help)
   puts parser.help
