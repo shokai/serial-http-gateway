@@ -1,5 +1,4 @@
 #!/usr/bin/env ruby
-# -*- coding: utf-8 -*-
 # simple serial terminal
 require 'rubygems'
 gem 'serialport','>=1.0.4'

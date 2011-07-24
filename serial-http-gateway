@@ -22,8 +22,8 @@ if !serial_device or parser.has_option(:help)
     puts 'e.g. serial-http-gateway COM1'
     puts '     serial-http-gateway COM1 -bps 9600 -bit 8 -stopbit 1 -parity 0 -port 8783'
   else
-    puts 'e.g. serial-http-gateway /dev/tty.your-usbdevice'
-    puts '     serial-http-gateway /dev/tty.your-usbdevice -bps 9600 -bit 8 -stopbit 1 -parity 0 -port 8783'
+    puts 'e.g. serial-http-gateway /dev/tty.your-device'
+    puts '     serial-http-gateway /dev/tty.your-device -bps 9600 -bit 8 -stopbit 1 -parity 0 -port 8783'
   end
   exit 1
 end
