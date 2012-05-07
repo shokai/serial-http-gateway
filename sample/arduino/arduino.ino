@@ -1,6 +1,7 @@
 
 char led_pin = 13;
 char serial_recv;
+int cds;
 
 void setup(){
   pinMode(led_pin, OUTPUT);
@@ -19,4 +20,6 @@ void loop(){
       break;
     }
   }
+  cds = analogRead(0);
+  Serial.println(cds);
 }

@@ -10,4 +10,15 @@ $(function(){
             alert('led off');
         });
     });
+    setInterval(function(){
+        $.getJSON($('#addr').val(), {}, function(data){
+            var i = data[0].data;
+            if(i > 200){
+                $('#cds').css('background-color', '#FFF');
+            }
+            else{
+                $('#cds').css('background-color', '#000');
+            }
+        });
+    }, 100);
 });
