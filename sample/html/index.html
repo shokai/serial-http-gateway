@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <meta charset="UTF-8" content="text/html" http-equiv="Content-Type" />
+    <title>serial-http-gateway sample</title>
+    <script src="jquery.js" type="text/javascript"></script>
+    <script src="main.js" type="text/javascript"></script>
+    <style type="text/css">
+      div {
+        margin : 15px;
+      }
+      input {
+        font-size : 100%;
+      }
+      .btn {
+        padding : 5px;
+        background-color : #DDD;
+        border : 2px solid #BBB;
+        border-radius : 8px;
+        margin : 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>serial-http-gateway sample</h1>
+    <div id="main">
+      <h2>Serial Port</h2>
+      <div>
+        <input type="text" value="http://localhost:8783" id="addr" size="40" />
+      </div>
+      <h2>LED</h2>
+      <div class="led">
+        <span class="btn on">
+          ON
+        </span>
+        <span class="btn off">
+          OFF
+        </span>
+      </div>
+    </div>
+    <hr />
+    github : <a href="https://github.com/shokai/serial-http-gateway">https://github.com/shokai/serial-http-gateway</a>
+  </body>
+</html>
