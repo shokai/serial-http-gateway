@@ -5,14 +5,14 @@ access serial device via HTTP
 
 Dependencies
 ============
-* serialport, eventmachine, eventmachine_httpserver, json, ArgsParser (rubygem)
+* serialport, eventmachine, eventmachine_httpserver, json, args_parser (rubygem)
 * your serial device (arduino, mbed ...)
 
 
 Install gems
 ------------
 
-    % gem install serialport eventmachine eventmachine_httpserver json ArgsParser
+    % gem install serialport eventmachine eventmachine_httpserver json args_parser
 
 
 Run
