@@ -1,6 +1,3 @@
-var cds = function(v){
-    $('.cds input').val(v);
-};
 
 $(function(){
     $('.led .on').click(function(){
@@ -15,8 +12,7 @@ $(function(){
     });
     setInterval(function(){
         $.getJSON($('#addr').val(), {}, function(data){
-            var i = data[0].data;
-            cds(i);
+            $('.cds input').val( data[0].data );
         });
     }, 100);
 });
