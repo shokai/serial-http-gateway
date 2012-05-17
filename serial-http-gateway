@@ -76,7 +76,7 @@ EM::run do
 
   EM::defer do
     loop do
-      line = gets.gsub(/[\r\n]/,'')
+      line = STDIN.gets.gsub(/[\r\n]/,'')
       next if !line or line.to_s.size < 1
       @@sp.puts line
     end
