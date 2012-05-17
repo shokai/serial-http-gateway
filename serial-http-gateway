@@ -40,11 +40,11 @@ end
 
 @@recvs = Array.new
 
-class Handler  < EventMachine::Connection
-  include EventMachine::HttpServer
+class Handler  < EM::Connection
+  include EM::HttpServer
   
   def process_http_request
-    res = EventMachine::DelegatedHttpResponse.new(self)
+    res = EM::DelegatedHttpResponse.new(self)
     puts "[http] #{@http_request_method} #{@http_path_info} #{@http_query_string} #{@http_post_content}"
     if @http_request_method == 'GET'
       res.status = 200
@@ -59,9 +59,7 @@ class Handler  < EventMachine::Connection
   end
 end
 
-
 EM::run do
-  
   EM::defer do
     loop do
       data = @@sp.gets.gsub(/[\r\n]/,'')
@@ -76,7 +74,7 @@ EM::run do
     end
   end
 
-  EventMachine::defer do
+  EM::defer do
     loop do
       line = gets.gsub(/[\r\n]/,'')
       next if !line or line.to_s.size < 1
@@ -84,8 +82,7 @@ EM::run do
     end
   end
 
-  EventMachine::start_server("0.0.0.0", parser[:port], Handler)
+  EM::start_server("0.0.0.0", parser[:port], Handler)
   puts "starting http server.."
   puts " => port #{parser[:port]}"
-
 end
