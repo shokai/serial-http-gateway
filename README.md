@@ -38,7 +38,7 @@ Use
 
     ## HTTP-POST
     # write to serial device
-    % curl -d 'testtest' 'http://localhost:8783'
+    % curl -d 'hello!!' 'http://localhost:8783'
 
 "time" in json array is unix-time (msec).
 
