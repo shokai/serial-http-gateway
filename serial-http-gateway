@@ -16,8 +16,6 @@ parser = ArgsParser.parse ARGV do
   arg :port, 'HTTP Server Port', :default => 8783
 end
 
-serial_device, params = parser.parse(ARGV)
-
 if !parser.first or parser.has_option? :help
   puts parser.help
   if RUBY_PLATFORM =~ /mswin|mingw|cygwin|bccwin/
