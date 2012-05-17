@@ -22,4 +22,5 @@ void loop(){
   }
   cds = analogRead(0);
   Serial.println(cds);
+  delay(100);
 }
