@@ -1,3 +1,7 @@
+!!OBSOLETED!!
+=============
+use [serialport-server](http://shokai.github.com/serialport-server)
+
 serial-http-gateway
 ===================
 access serial device via HTTP
